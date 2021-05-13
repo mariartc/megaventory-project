@@ -56,4 +56,61 @@ class Product {
     }
 }
 
+class Client {
+    constructor(name, email, shipping_address, phone) {
+        this.name = name;
+        this.email = email;
+        this.shipping_address = shipping_address;
+        this.phone = phone;
+    }
+
+    async addClient() {
+        const details = {
+            method: 'post',
+            url: `${process.env.CLIENT_INSERT_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "mvSupplierClient": {
+                    "SupplierClientName": this.name,
+                    "SupplierClientShippingAddress": this.shipping_address,
+                    "SupplierClientPhone1": this.phone,
+                    "SupplierClientEmail": this.email
+                },
+                "mvRecordAction": "Insert"
+            }
+        }
+        return await axios(details)
+            .then( (response) => {
+                console.log(response.data);
+                return response.data.mvSupplierClient.SupplierClientID;
+            })
+            .catch( (error) => {
+                console.log(error);
+                return -1;
+            })
+    }
+
+    deleteClient(id) {
+        console.log(id)
+        const details = {
+            method: 'post',
+            url: `${process.env.CLIENT_DELETE_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "SupplierClientIDToDelete": id
+            }
+        }
+        axios(details)
+            .then( (response) => {
+                console.log(response.data);
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+    }
+}
+
 module.exports.Product = Product;
+module.exports.Client = Client;
