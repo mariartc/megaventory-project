@@ -112,5 +112,60 @@ class Client {
     }
 }
 
+class Warehouse {
+    constructor(abbreviation, name, address) {
+        this.abbreviation = abbreviation;
+        this.name = name;
+        this.address = address;
+    }
+
+    async addWarehouse() {
+        const details = {
+            method: 'post',
+            url: `${process.env.WAREHOUSE_INSERT_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "mvInventoryLocation": {
+                    "InventoryLocationName": this.name,
+                    "InventoryLocationAbbreviation": this.abbreviation,
+                    "InventoryLocationAddress": this.address
+                },
+                "mvRecordAction": "Insert"
+            }
+        }
+        return await axios(details)
+            .then( (response) => {
+                console.log(response.data);
+                return response.data.mvInventoryLocation.InventoryLocationID;
+            })
+            .catch( (error) => {
+                console.log(error);
+                return -1;
+            })
+    }
+
+    deleteWarehouse(id) {
+        console.log(id)
+        const details = {
+            method: 'post',
+            url: `${process.env.WAREHOUSE_DELETE_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "InventoryLocationIDToDelete": id
+            }
+        }
+        axios(details)
+            .then( (response) => {
+                console.log(response.data);
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+    }
+}
+
 module.exports.Product = Product;
 module.exports.Client = Client;
+module.exports.Warehouse = Warehouse;
