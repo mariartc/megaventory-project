@@ -166,6 +166,112 @@ class Warehouse {
     }
 }
 
+class Tax {
+    constructor(name, value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    async addTax() {
+        const details = {
+            method: 'post',
+            url: `${process.env.TAX_INSERT_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "mvTax": {
+                "TaxName": this.name,
+                "TaxValue": this.value
+            },
+            "mvRecordAction": "Insert"
+            }
+        }
+        return await axios(details)
+            .then( (response) => {
+                console.log(response.data);
+                return response.data.mvTax.TaxID;
+            })
+            .catch( (error) => {
+                console.log(error);
+                return -1;
+            })
+    }
+
+    deleteTax(id) {
+        console.log(id)
+        const details = {
+            method: 'post',
+            url: `${process.env.TAX_DELETE_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "TaxIDToDelete": id
+            }
+        }
+        axios(details)
+            .then( (response) => {
+                console.log(response.data);
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+    }
+}
+
+class Discount {
+    constructor(name, value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    async addDiscount() {
+        const details = {
+            method: 'post',
+            url: `${process.env.DISCOUNT_INSERT_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "mvDiscount": {
+                    "DiscountName": this.name,
+                    "DiscountValue": this.value
+                },
+                "mvRecordAction": "Insert"
+            }
+        }
+        return await axios(details)
+            .then( (response) => {
+                console.log(response.data);
+                return response.data.mvDiscount.DiscountID;
+            })
+            .catch( (error) => {
+                console.log(error);
+                return -1;
+            })
+    }
+
+    deleteDiscount(id) {
+        console.log(id)
+        const details = {
+            method: 'post',
+            url: `${process.env.DISCOUNT_DELETE_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "DiscountIDToDelete": id
+            }
+        }
+        axios(details)
+            .then( (response) => {
+                console.log(response.data);
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+    }
+}
+
 module.exports.Product = Product;
 module.exports.Client = Client;
 module.exports.Warehouse = Warehouse;
+module.exports.Tax = Tax;
+module.exports.Discount = Discount;
