@@ -57,11 +57,16 @@ class Product {
 }
 
 class Client {
-    constructor(name, email, shipping_address, phone) {
+    constructor(name, email, shipping_address, phone, is_loyalty_client) {
         this.name = name;
         this.email = email;
         this.shipping_address = shipping_address;
         this.phone = phone;
+        this.is_loyalty_client = is_loyalty_client;
+    }
+
+    isLoyaltyClient() {
+        return this.is_loyalty_client;
     }
 
     async addClient() {
@@ -270,8 +275,90 @@ class Discount {
     }
 }
 
+class SalesOrder {
+    constructor(client_id, warehouse_id, product_sku, quantity, tax_id, discount_id= -1) {
+        this.client_id = client_id;
+        this.warehouse_id = warehouse_id;
+        this.product_sku = product_sku;
+        this.quantity = quantity;
+        this.tax_id = tax_id;
+        this.discount_id = discount_id;
+    }
+
+    async addSalesOrder() {
+        const data_body = this.discount_id === -1 ? {
+            "APIKEY": `${process.env.API_KEY}`,
+            "mvSalesOrder": {
+                "SalesOrderClientId": this.client_id,
+                "SalesOrderInventoryLocationID": this.warehouse_id,
+                "SalesOrderStatus": "Verified",
+                "SalesOrderDetails": [
+                    {
+                        "SalesOrderRowProductSKU": this.product_sku,
+                        "SalesOrderRowQuantity": this.quantity,
+                        "SalesOrderRowTaxID": this.tax_id
+                    }
+                ]
+            },
+            "mvRecordAction": "Insert"
+        } : {
+            "APIKEY": `${process.env.API_KEY}`,
+            "mvSalesOrder": {
+                "SalesOrderClientId": this.client_id,
+                "SalesOrderInventoryLocationID": this.warehouse_id,
+                "SalesOrderStatus": "Verified",
+                "SalesOrderDetails": [
+                    {
+                        "SalesOrderRowProductSKU": this.product_sku,
+                        "SalesOrderRowQuantity": this.quantity,
+                        "SalesOrderRowTaxID": this.tax_id,
+                        "SalesOrderRowDiscountID": this.discount_id,
+                    }
+                ]
+            },
+            "mvRecordAction": "Insert"
+        };
+        const details = {
+            method: 'post',
+            url: `${process.env.SALES_ORDER_INSERT_URL}`,
+            headers: {},
+            data: data_body
+        }
+        return await axios(details)
+            .then( (response) => {
+                console.log(response.data);
+                return response.data.mvSalesOrder.SalesOrderId;
+            })
+            .catch( (error) => {
+                console.log(error);
+                return -1;
+            })
+    }
+
+    deleteSalesOrder(id) {
+        console.log(id)
+        const details = {
+            method: 'post',
+            url: `${process.env.SALES_ORDER_DELETE_URL}`,
+            headers: {},
+            data: {
+                "APIKEY": `${process.env.API_KEY}`,
+                "mvSalesOrderNoToCancel": id
+            }
+        }
+        axios(details)
+            .then( (response) => {
+                console.log(response.data);
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+    }
+}
+
 module.exports.Product = Product;
 module.exports.Client = Client;
 module.exports.Warehouse = Warehouse;
 module.exports.Tax = Tax;
 module.exports.Discount = Discount;
+module.exports.SalesOrder = SalesOrder;
