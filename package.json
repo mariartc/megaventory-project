@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test_api_key": "node project_files/test_api_key.js",
+    "insert": "node project_files/insert_data.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
