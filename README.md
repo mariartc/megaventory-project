@@ -2,27 +2,27 @@
 This is a mini project developed for the hypothetical scenario of an eshop wanting to be connected to [Megaventory](https://www.megaventory.com/). Project uses Megaventory API to insert some data to the eshop's account in Megaventory. <br>
 ## Purpose
 The purpose of this project is to insert the following data into a Megaventory account:
-####1. Product
+#### 1. Product
 * SKU: 1112256
 * Description: Nike Shoes
 * Sales Price: 99.99
 * Purchase Price: 44.99
-####2. Client
+#### 2. Client
 * Name: babis   
 * E-mail: babis@exampletest.com
 * Shipping Address: Example 8, Athens
 * Phone: 1235698967
-####3. Warehouse
+#### 3. Warehouse
 * Abbreviation: Main
 * Name: Main Location
 * Address: Example 20, Athens
-####4. Tax
+#### 4. Tax
 * Name: My shop tax
 * Value: 24%
-####5. Discount
+#### 5. Discount
 * Name: Loyalty customers discount
 * Value: 50%
-####6. Sales order
+#### 6. Sales order
 * Client: Babis
 * Product: Nike shoes
 * Quantity: 2
