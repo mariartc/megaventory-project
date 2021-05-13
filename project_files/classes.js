@@ -28,7 +28,7 @@ class Product {
         return await axios(details)
             .then( (response) => {
                 console.log(response.data);
-                return response.data.mvProduct.ProductID;
+                return response.data.entityID;
             })
             .catch( (error) => {
                 console.log(error);
@@ -88,7 +88,7 @@ class Client {
         return await axios(details)
             .then( (response) => {
                 console.log(response.data);
-                return response.data.mvSupplierClient.SupplierClientID;
+                return response.data.entityID;
             })
             .catch( (error) => {
                 console.log(error);
@@ -142,7 +142,7 @@ class Warehouse {
         return await axios(details)
             .then( (response) => {
                 console.log(response.data);
-                return response.data.mvInventoryLocation.InventoryLocationID;
+                return response.data.entityID;
             })
             .catch( (error) => {
                 console.log(error);
@@ -194,7 +194,7 @@ class Tax {
         return await axios(details)
             .then( (response) => {
                 console.log(response.data);
-                return response.data.mvTax.TaxID;
+                return response.data.entityID;
             })
             .catch( (error) => {
                 console.log(error);
@@ -246,7 +246,7 @@ class Discount {
         return await axios(details)
             .then( (response) => {
                 console.log(response.data);
-                return response.data.mvDiscount.DiscountID;
+                return response.data.entityID;
             })
             .catch( (error) => {
                 console.log(error);
@@ -327,7 +327,7 @@ class SalesOrder {
         return await axios(details)
             .then( (response) => {
                 console.log(response.data);
-                return response.data.mvSalesOrder.SalesOrderId;
+                return response.data.entityID;
             })
             .catch( (error) => {
                 console.log(error);
